@@ -1,0 +1,31 @@
+Data Transformation Steps
+
+1. Uploaded VideoGames raw data to Hive
+
+2. Created a sales_genre table, loaded "VideoGames" and verified table set up
+
+3. Selected Genre, Global_Sales, Critic_Score from Sales
+
+INSERT OVERWRITE TABLE sales_genre
+SELECT Genre, Global_Sales, Critic_Score
+FROM videogames;
+
+4. Create a query to Round Global_Sales
+
+INSERT OVERWRITE TABLE sales_genre
+SELECT Genre, ROUND (Global_Sales, 1) AS Global_Sales, Critic_Score
+FROM videogames; 
+
+5. Filter the data to only look at Critic_Score that is greater than 0
+
+INSERT OVERWRITE TABLE sales_genre
+SELECT *
+FROM sales_genre
+WHERE Critic_Score > 0
+
+6. Order data by Critic_Score from highest to lowest
+
+INSERT OVERWRITE TABLE sales_genre
+SELECT *
+FROM sales_genre
+ORDER BY Critic_Score DESC
