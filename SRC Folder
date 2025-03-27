@@ -1,0 +1,69 @@
+Data Aggregation Steps
+
+1. Uploaded VideoGames raw data to Hive
+
+2. Created shooter table
+
+CREATE TABLE shooter
+(
+Genre string, Global_Sales float, Critic_Score int
+);
+
+3.Create Overwrite
+
+INSERT OVERWRITE TABLE shooter
+SELECT Genre, critic_score, global_sales
+FROM VideoGames
+
+
+4. Aggregate data to show Average shooter_critic_score for shooter games
+
+INSERT OVERWRITE TABLE shooter
+SELECT *
+FROM shooter
+WHERE genre LIKE "%shooter%";
+GROUP BY genre;
+
+5. Repeat Steps for Sports table.
+
+6. Create 3 statistic tables (average, min, max) showing global_sales for: ALL games, sports games, shooter games. Call the columns "average_global_sales", "min_global_sales" and "max_global_sales"
+
+
+CREATE TABLE AllGames
+(
+Genre string, Global_sales float
+);
+
+INSERT OVERWRITE TABLE ALLGames
+SELECT Genre, Global_sales
+FROM VideoGames
+
+SELECT Genre, AVG(Global_sales) AS average_global_sales, MIN(Global_Sales) AS MIN_Global_Sales, MAX(Global_Sales) AS MAX_Global_sales
+FROM ALLGames
+GROUP BY Genre;
+
+
+7. Repeat steps for Sports Games and Shooter Games. Sports games will require a WHERE /  LIKE clause to identify the various sports games. 
+
+SELECT Genre, AVG(Global_sales) AS average_global_sales, MIN(Global_Sales) AS MIN_Global_Sales, MAX(Global_Sales) AS MAX_Global_sales
+FROM SporTS
+WHERE Genre LIKE "%Sports%"
+GROUP BY Genre; 
+
+8. Create 2 tables containing the global_sales and the count of games with that global_sales for: Sports games and Shooter games.  For each table, label the columns as: “global_sales” and “count”.
+
+CREATE TABLE shooter
+(
+genre string, Global_Sales float
+);
+
+INSERT OVERWRITE TABLE shooter
+SELECT Genre, Global_Sales
+FROM VideoGames
+
+SELECT Genre, COUNT(Genre) AS count, SUM(Global_Sales) AS Global_Sales
+FROM shooter
+WHERE Genre LIKE "%Shooter%"
+GROUP BY Genre
+
+9. Repeat steps for Sports games. 
